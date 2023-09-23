@@ -1,6 +1,7 @@
 import os
 import sys
 import logging
+from termcolor import colored
 
 from langchain.document_loaders import PyPDFLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
@@ -43,6 +44,7 @@ class FormatPrint:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
     END = '\033[0m'
+    START = '\033[1m'
 
 
 class PDFChatbot:
@@ -143,10 +145,16 @@ while True:
             output = pdf_chatbot.llm_chain(inputs={'context': context_compressed, 'user_input': user_input})
             print(f"\n{output['text']}", end='\n\n')
 
-            print(FormatPrint.BOLD + "Compressed Context" + FormatPrint.BOLD, end=' ')
-            print(f" {context_compressed}", end='\n\n')
+            print(
+                FormatPrint.START + FormatPrint.BLUE + FormatPrint.BOLD + "Compressed Context: " + FormatPrint.BOLD
+                + FormatPrint.BLUE + FormatPrint.END,
+                end='')
+            print(f"{context_compressed}", end='\n\n')
 
-            print(FormatPrint.BOLD + "Original Context" + FormatPrint.BOLD, end=' ')
-            print(f"{context_original}")
+            print(
+                FormatPrint.START + FormatPrint.GREEN + FormatPrint.BOLD + "Original Context: " + FormatPrint.BOLD
+                + FormatPrint.GREEN + FormatPrint.END,
+                end='')
+            print(f"{context_original}", end='\n\n')
         else:
-            print("Cannot answer the question given that there were not relevant documents returned")
+            print("Cannot answer the question given that there were not relevant documents returned, please try again")

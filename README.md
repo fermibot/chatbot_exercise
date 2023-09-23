@@ -43,6 +43,9 @@ python chatbot.py chapter6.pdf
 
 Here is a video showing the above in action.
 
+[![Watch the video](demo_video.png)](demo_video.mov)
+
+
 ---
 
 ## Overview of the architecture

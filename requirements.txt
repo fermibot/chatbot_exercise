@@ -8,3 +8,4 @@ tiktoken
 faiss-cpu
 spacy
 sentence-transformers
+termcolor
