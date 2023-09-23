@@ -43,7 +43,7 @@ python chatbot.py chapter6.pdf
 
 Here is a video showing the above in action.
 
-[![Watch the video](demo_video.png)](demo_video.mov)
+[![Watch the video](demo_video.png)](https://www.youtube.com/watch?v=u9sWso45cRw)
 
 
 ---
