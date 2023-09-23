@@ -8,7 +8,7 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationalRetrievalChain, ConversationChain
 from langchain.retrievers import BM25Retriever, EnsembleRetriever, MultiQueryRetriever, ContextualCompressionRetriever
-from langchain.text_splitter import RecursiveCharacterTextSplitter, SpacyTextSplitter
+from langchain.text_splitter import SpacyTextSplitter
 from langchain.vectorstores import FAISS
 from langchain.agents import Tool, AgentType, initialize_agent
 from langchain.prompts import PromptTemplate
@@ -62,8 +62,9 @@ class PDFChatbot:
         log_messages("TextSplitter|Instantiation|Start")
         full_text = ''
         for sub_doc in self.document:
-            full_text += sub_doc.page_content
+            full_text += ' ' + sub_doc.page_content
 
+        # Keeping the prompt simpel and to the point to ensure lower occurrence of hallucinations
         self.prompt_template = """Answer the following question based on the context only and nothing else. 
                             if the user is asking for instructions, return the answer as bullets
                             context: {context}
@@ -100,10 +101,8 @@ class PDFChatbot:
     @staticmethod
     def document_metadata(document: Document) -> Document:
         page_content = document.page_content
-        metadata = document.metadata
-        metadata_new = {"page_content_original": page_content}
-        metadata_new = metadata.update(metadata_new)
-        return Document(page_content=page_content, metadata=metadata)
+        metadata_new = {'source': document.metadata['source'], "page_content_original": page_content}
+        return Document(page_content=page_content, metadata={"metadata": metadata_new})
 
     def chat_load(self):
         log_messages("ChatOpenAI|Model|loading|")
@@ -134,14 +133,14 @@ pdf_chatbot = PDFChatbot(file_path=file_path)
 while True:
     user_input = input(" 🤖💬️ Enter Your Query: ")
     if user_input == "exit":
-        log_messages("Thank you for using our Chat service ✌️")
+        log_messages("Thank you for using our Chat service. Have a great day!!")
         exit()
     else:
         contexts = pdf_chatbot.get_top_document(user_input)
         if len(contexts) > 0:
             context_compressed = ' '.join(contexts[0].page_content.split())
-            context_original = ' '.join(contexts[0].metadata['page_content_original'].split())
-
+            context_original = ' '.join(contexts[0].metadata['metadata']['page_content_original'].split())
+            context_original = f"ⓘ From {contexts[0].metadata['metadata']['source']} || {context_original}"
             output = pdf_chatbot.llm_chain(inputs={'context': context_compressed, 'user_input': user_input})
             print(f"\n{output['text']}", end='\n\n')
 
@@ -155,6 +154,6 @@ while True:
                 FormatPrint.START + FormatPrint.GREEN + FormatPrint.BOLD + "Original Context: " + FormatPrint.BOLD
                 + FormatPrint.GREEN + FormatPrint.END,
                 end='')
-            print(f"{context_original}", end='\n\n')
+            print(f"{context_original} ", end='\n\n')
         else:
             print("Cannot answer the question given that there were not relevant documents returned, please try again")
