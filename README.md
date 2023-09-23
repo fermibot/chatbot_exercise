@@ -6,7 +6,7 @@
 
 # PDF Chatbot
 
-Outlined in this repository is a Simple Chatbot. This document gives an overview of the document
+Outlined in this document is a Chatbot that is able to open a PDF doc and answer the questions from a user. 
 
 ---
 
