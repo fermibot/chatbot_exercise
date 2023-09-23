@@ -120,6 +120,8 @@ class PDFChatbot:
         self.compressor = LLMChainExtractor.from_llm(self.chat_model)
         self.compression_retriever = ContextualCompressionRetriever(base_compressor=self.compressor,
                                                                     base_retriever=self.multiquery_retriever)
+
+        # Assemble the retriever. The weights here are chosen so that the compression retriever gets more weight
         self.ensemble_retriever = EnsembleRetriever(
             retrievers=[self.compression_retriever, self.faiss_retriever],
             weights=[0.7, 0.3])
