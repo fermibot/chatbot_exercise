@@ -1,6 +1,7 @@
 <p align="center">
-<img src="https://img.shields.io/badge/PDFChatbot-1.0-green.svg"/>
+<img src="https://img.shields.io/badge/PDFChatbot-1.0-turquoise.svg"/>
 <img src="https://img.shields.io/badge/LangChain-OpenAI-blue"/>
+<img src="https://img.shields.io/badge/python-3.11-darkgreen"/>
 </p>
 
 # PDF Chatbot
@@ -48,7 +49,7 @@ python chatbot.py chapter6.pdf
 
 Here is a video showing the above in action.
 
-[//]: # ([![Watch the video]&#40;demo_video.png&#41;]&#40;https://www.youtube.com/watch?v=u9sWso45cRw&#41;)
+[![Watch the video](demo_video.png)](https://www.youtube.com/watch?v=u9sWso45cRw)
 
 ---
 
@@ -58,7 +59,7 @@ Here is a video showing the above in action.
 
 This Chatbot uses
 the  [PyPDFLoader](https://api.python.langchain.com/en/latest/document_loaders/langchain.document_loaders.pdf.PyPDFLoader.html)
-for loading the document. By default, each of the page of the PDF is loaded into separate documents. But there is an
+for loading the document. _By default, each of the page of the PDF is loaded into a separate document_. But there is an
 inherent problem with this. Many a times, the context is spread across multiple pages. This is problematic for
 retrieval.
 
