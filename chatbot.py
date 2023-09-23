@@ -82,9 +82,11 @@ class PDFChatbot:
         self.documents = [self.document_metadata(document=document) for document in self.documents]
         log_messages("TextSplitter|split_documents|End")
 
+        # initiate the chat model
         self.chat_model = None
         self.chat_load()
 
+        # declare the retriever variable and load them
         self.bm25_retriever = None
         self.embedding = None
         self.faiss_retriever = None
@@ -96,6 +98,7 @@ class PDFChatbot:
         self.ensemble_retriever = None
         self.retrievers_load()
 
+        # define the llm chain
         self.llm_chain = LLMChain(llm=self.chat_model, prompt=self.prompt_template)
 
     @staticmethod
@@ -126,7 +129,7 @@ class PDFChatbot:
             retrievers=[self.compression_retriever, self.faiss_retriever],
             weights=[0.7, 0.3])
 
-    def get_top_document(self, query):
+    def get_top_documents(self, query):
         return self.ensemble_retriever.get_relevant_documents(query=query)
 
 
@@ -138,7 +141,7 @@ while True:
         log_messages("Thank you for using our Chat service. Have a great day!!")
         exit()
     else:
-        contexts = pdf_chatbot.get_top_document(user_input)
+        contexts = pdf_chatbot.get_top_documents(user_input)
         if len(contexts) > 0:
             context_compressed = ' '.join(contexts[0].page_content.split())
             context_original = ' '.join(contexts[0].metadata['metadata']['page_content_original'].split())
