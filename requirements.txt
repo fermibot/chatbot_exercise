@@ -1,0 +1,10 @@
+pandas
+numpy
+openai
+langchain
+pypdf
+rank_bm25
+tiktoken
+faiss-cpu
+spacy
+sentence-transformers
