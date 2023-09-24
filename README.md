@@ -130,7 +130,7 @@ The architecture for this bot is shown below
 ### Full Interaction
 
 ```commandline
-(venv) fermibot@Fermi-Mac chatbot_exercise % python chatbot.py chapter6.pdf
+(venv) user % python chatbot.py chapter6.pdf
  🤖💬️ FileLoad|chapter6.pdf|Attempting
  🤖💬️ FileLoad|chapter6.pdf|Successful
  🤖💬️ TextSplitter|Instantiation|Start
