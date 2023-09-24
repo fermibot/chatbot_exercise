@@ -23,7 +23,7 @@ sh init.sh
 
 ## Example
 
-Show below is an example of how to use this Chatbot for searching a PDF document for information.
+Shown below is an example of how to use this Chatbot for searching a PDF document for information.
 
 ### Input
 
