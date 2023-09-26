@@ -1,3 +1,4 @@
+import math
 import os
 import sys
 import logging
@@ -16,6 +17,9 @@ from langchain.chains import LLMChain
 from langchain.retrievers.document_compressors import LLMChainExtractor
 from langchain.docstore.document import Document
 import warnings
+import spacy
+
+nlp = spacy.load("en_core_web_sm")
 
 log = logging.getLogger("ChatBot")
 logging.basicConfig(level=logging.WARNING)
@@ -64,6 +68,11 @@ class PDFChatbot:
         for sub_doc in self.document:
             full_text += ' ' + sub_doc.page_content
 
+        length_chunk = int(nlp.max_length * 0.8)
+        length_total = len(full_text)
+
+        full_texts = [full_text[i:i + length_chunk] for i in range(0, length_total, length_chunk)]
+
         # Keeping the prompt simpel and to the point to ensure lower occurrence of hallucinations
         self.prompt_template = """Answer the following question based on the context only and nothing else. 
                             if the user is asking for instructions, return the answer as bullets
@@ -72,13 +81,13 @@ class PDFChatbot:
                             answer: """
         self.prompt_template = PromptTemplate.from_template(template=self.prompt_template)
 
-        self.document = Document(page_content=full_text, metadata={"source": file_path})
+        self.documents = [Document(page_content=x, metadata={"source": file_path}) for x in full_texts]
         self.text_splitter = SpacyTextSplitter(pipeline='en_core_web_sm', chunk_overlap=256)
         log_messages("TextSplitter|Instantiation|End")
 
         # Splitting the documenting and augmenting the metadata for reference purposes
         log_messages("TextSplitter|split_documents|Start")
-        self.documents = self.text_splitter.split_documents(documents=[self.document])
+        self.documents = self.text_splitter.split_documents(documents=self.documents)
         self.documents = [self.document_metadata(document=document) for document in self.documents]
         log_messages("TextSplitter|split_documents|End")
 
