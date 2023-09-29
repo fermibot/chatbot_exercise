@@ -85,7 +85,7 @@ class PDFChatbot:
         self.text_splitter = SpacyTextSplitter(pipeline='en_core_web_sm', chunk_overlap=256)
         log_messages("TextSplitter|Instantiation|End")
 
-        # Splitting the documenting and augmenting the metadata for reference purposes
+        # Splitting the documents and augmenting the metadata for reference purposes
         log_messages("TextSplitter|split_documents|Start")
         self.documents = self.text_splitter.split_documents(documents=self.documents)
         self.documents = [self.document_metadata(document=document) for document in self.documents]
@@ -95,7 +95,7 @@ class PDFChatbot:
         self.chat_model = None
         self.chat_load()
 
-        # declare the retriever variable and load them
+        # declare the retriever variables and load them
         self.bm25_retriever = None
         self.embedding = None
         self.faiss_retriever = None
