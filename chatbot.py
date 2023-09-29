@@ -73,7 +73,7 @@ class PDFChatbot:
 
         full_texts = [full_text[i:i + length_chunk] for i in range(0, length_total, length_chunk)]
 
-        # Keeping the prompt simpel and to the point to ensure lower occurrence of hallucinations
+        # Keeping the prompt simple and to the point to ensure a lower occurrence of hallucinations
         self.prompt_template = """Answer the following question based on the context only and nothing else. 
                             if the user is asking for instructions, return the answer as bullets
                             context: {context}
